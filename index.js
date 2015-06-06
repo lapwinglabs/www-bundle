@@ -5,11 +5,14 @@
 var cssimport = require('postcss-import')
 var nested = require('postcss-nested')
 var Browserify = require('browserify')
+var NODE_PATH = process.env.NODE_PATH
 var Bundle = require('koa-bundle')
 var join = require('path').join
 var postcss = require('postcss')
 var cssnext = require('cssnext')
 var fs = require('fs')
+var _node_path;
+var _plugins;
 
 /**
  * Transforms
@@ -25,26 +28,10 @@ var envify = require('envify')
 var externals = ['react', 'd3', 'jquery']
 
 /**
- * $NODE_PATH support
- */
-
-var node_path = process.env.NODE_PATH && join(root, process.env.NODE_PATH)
-
-/**
- * post-css plugins
- */
-
-var plugins = [
-  cssimport({ path: node_path ? node_path : [] }),
-  cssnext({ import: false }),
-  nested()
-]
-
-/**
  * Export `bundle`
  */
 
-module.exports = Bundle(function (file, fn) {
+module.exports = Bundle({ root: process.cwd() }, function (file, fn) {
   // jsx => js
   if (file.type === 'jsx') file.type = 'js'
 
@@ -66,7 +53,7 @@ module.exports = Bundle(function (file, fn) {
 function javascript (file, fn) {
   var options = {
     debug: file.debug,
-    paths: node_path
+    paths: node_path(file.root)
   }
 
   Browserify(options)
@@ -85,8 +72,7 @@ function javascript (file, fn) {
 function css (file, fn) {
   fs.readFile(file.path, 'utf8', function (err, str) {
     if (err) return fn(err)
-
-    postcss(plugins)
+    postcss(plugins(file.root))
       .process(str, { from: file.path })
       .then(function (result) {
         fn(null, result.css)
@@ -110,4 +96,30 @@ function external (file, fn) {
     .on('error', fn)
     .require(file.path, { expose: file.mod, basedir: file.root })
     .bundle(fn)
+}
+
+/**
+ * Lazily load the plugins
+ */
+
+function plugins(root) {
+  if (_plugins) return _plugins
+  var np = node_path(root)
+
+  _plugins = [
+    cssimport({ path: np ? np : [] }),
+    cssnext({ import: false }),
+    nested()
+  ]
+
+  return _plugins
+}
+
+/**
+ * Lazily load the node_path
+ */
+
+function node_path(root) {
+  return _node_path
+    || (_node_path = NODE_PATH && join(root, NODE_PATH))
 }
