@@ -28,7 +28,7 @@ See the [react example](example/react) for the complete server implementation
 
 ## Stack
 
-- [koa-bundle](https://github.com/koajs/bundle) (automattic etag, compression, gzip, sourcemap support)
+- [koa-bundle](https://github.com/koajs/bundle) (automatic etag, compression, gzip, sourcemap support)
 - browserify ([babelify](https://github.com/babel/babelify), [envify](https://github.com/hughsk/envify), externalizes big assets like react and D3)
 - postCSS ([postcss-import](https://github.com/postcss/postcss-import), [cssnext](https://github.com/cssnext/cssnext), [postcss-nested](https://github.com/postcss/postcss-nested))
 
