@@ -1,0 +1,32 @@
+{
+  "name": "www-bundle",
+  "version": "0.0.1",
+  "description": "Opinionated asset pipeline for the frontend",
+  "keywords": [],
+  "author": "Matthew Mueller <matt@lapwinglabs.com>",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/lapwinglabs/www-bundle.git"
+  },
+  "dependencies": {
+    "babelify": "^6.1.2",
+    "browserify": "^10.2.3",
+    "cssnext": "^1.6.0",
+    "envify": "^3.4.0",
+    "koa-bundle": "^1.0.5",
+    "postcss": "^4.1.11",
+    "postcss-import": "^5.2.2",
+    "postcss-nested": "^0.3.2"
+  },
+  "devDependencies": {
+    "koa": "^0.21.0",
+    "mocha": "*",
+    "normalize.css": "^3.0.3",
+    "react": "^0.13.3",
+    "should": "*"
+  },
+  "main": "index",
+  "browser": {
+    "react": "react/dist/react.js"
+  }
+}
