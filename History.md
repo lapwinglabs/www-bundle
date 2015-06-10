@@ -1,5 +1,10 @@
 
-n.n.n / 2015-06-06
+1.0.0 / 2015-06-10
+==================
+
+  * add markdown support
+
+0.0.2 / 2015-06-06
 ==================
 
   * fix node_path and lazily load plugins
