@@ -18,6 +18,7 @@ var _plugins;
  * Transforms
  */
 
+var markdown = require('browserify-markdown')
 var babelify = require('babelify')
 var envify = require('envify')
 
@@ -60,6 +61,7 @@ function javascript (file, fn) {
     .on('error', fn)
     .external(externals)
     .add(file.path)
+    .transform(markdown())
     .transform(babelify)
     .transform(envify)
     .bundle(fn)

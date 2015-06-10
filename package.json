@@ -11,6 +11,7 @@
   "dependencies": {
     "babelify": "^6.1.2",
     "browserify": "^10.2.3",
+    "browserify-markdown": "^1.0.0",
     "cssnext": "^1.6.0",
     "envify": "^3.4.0",
     "koa-bundle": "^1.0.5",
