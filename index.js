@@ -118,7 +118,7 @@ function plugins(root) {
   debug('plugin NODE_PATH=%s', np)
 
   _plugins = [
-    cssimport({ path: np ? np : [], globs: true }),
+    cssimport({ path: np ? np : [], glob: true, root: root }),
     cssnext({ import: false }),
     nested()
   ]
