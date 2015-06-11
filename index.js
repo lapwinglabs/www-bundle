@@ -2,6 +2,7 @@
  * Module Dependencies
  */
 
+var debug = require('debug')('www-bundle')
 var cssimport = require('postcss-import')
 var nested = require('postcss-nested')
 var Browserify = require('browserify')
@@ -57,6 +58,9 @@ function javascript (file, fn) {
     paths: node_path(file.root)
   }
 
+  debug('javascript: file %j', file)
+  debug('javascript: options: %j', options)
+
   Browserify(options)
     .on('error', fn)
     .external(externals)
@@ -72,6 +76,8 @@ function javascript (file, fn) {
  */
 
 function css (file, fn) {
+  debug('css: file %j', file)
+
   fs.readFile(file.path, 'utf8', function (err, str) {
     if (err) return fn(err)
     postcss(plugins(file.root))
@@ -88,6 +94,8 @@ function css (file, fn) {
  */
 
 function external (file, fn) {
+  debug('external javascript: file %j', file)
+
   var options = {
     debug: file.debug,
     exposeAll: true,
@@ -107,6 +115,7 @@ function external (file, fn) {
 function plugins(root) {
   if (_plugins) return _plugins
   var np = node_path(root)
+  debug('plugin NODE_PATH=%s', np)
 
   _plugins = [
     cssimport({ path: np ? np : [] }),
