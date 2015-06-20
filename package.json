@@ -18,7 +18,8 @@
     "koa-bundle": "^1.0.5",
     "postcss": "^4.1.11",
     "postcss-import": "^5.2.2",
-    "postcss-nested": "^0.3.2"
+    "postcss-nested": "^0.3.2",
+    "postcss-simple-vars": "^0.3.0"
   },
   "devDependencies": {
     "koa": "^0.21.0",
