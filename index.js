@@ -5,6 +5,7 @@
 var debug = require('debug')('www-bundle')
 var cssimport = require('postcss-import')
 var nested = require('postcss-nested')
+var vars = require('postcss-simple-vars')
 var Browserify = require('browserify')
 var NODE_PATH = process.env.NODE_PATH
 var Bundle = require('koa-bundle')
@@ -120,7 +121,8 @@ function plugins(root) {
   _plugins = [
     cssimport({ path: np ? np : [], glob: true, root: root }),
     cssnext({ import: false }),
-    nested()
+    nested(),
+    vars()
   ]
 
   return _plugins
