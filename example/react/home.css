@@ -1,8 +1,9 @@
 @import "normalize.css";
+$color: salmon;
 
 body {
   // some annoying inline comment
   h2 { // some another annoying comment
-    color: salmon
+    color: $color;
   }
 }
