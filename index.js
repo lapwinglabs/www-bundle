@@ -1,8 +1,14 @@
 /**
- * Module Dependencies
+ * DEBUG
  */
 
 var debug = require('debug')('www-bundle')
+
+/**
+ * Module Dependencies
+ */
+
+var strip_comments = require('strip-css-singleline-comments/sync');
 var cssimport = require('postcss-import')
 var nested = require('postcss-nested')
 var vars = require('postcss-simple-vars')
@@ -81,6 +87,7 @@ function css (file, fn) {
 
   fs.readFile(file.path, 'utf8', function (err, str) {
     if (err) return fn(err)
+    str = strip_comments(str);
     postcss(plugins(file.root))
       .process(str, { from: file.path })
       .then(function (result) {
