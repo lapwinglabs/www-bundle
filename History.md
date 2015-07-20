@@ -1,4 +1,10 @@
 
+1.0.5 / 2015-07-19
+==================
+
+  * add more CSS goodies. clear: fix, border: { ... }, font-path: ...
+  * update example to include variables
+
 1.0.4 / 2015-07-03
 ==================
 
