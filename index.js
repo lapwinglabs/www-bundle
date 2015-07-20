@@ -8,16 +8,18 @@ var debug = require('debug')('www-bundle')
  * Module Dependencies
  */
 
-var strip_comments = require('strip-css-singleline-comments/sync');
+var strip_comments = require('strip-css-singleline-comments/sync')
 var nested_props = require('postcss-nested-props')
 var cssimport = require('postcss-import')
 var clearfix = require('postcss-clearfix')
 var fontpath = require('postcss-fontpath')
 var nested = require('postcss-nested')
 var vars = require('postcss-simple-vars')
+var relative = require('path').relative
 var Browserify = require('browserify')
 var NODE_PATH = process.env.NODE_PATH
 var Bundle = require('koa-bundle')
+var url = require('postcss-url')
 var join = require('path').join
 var postcss = require('postcss')
 var cssnext = require('cssnext')
@@ -127,6 +129,7 @@ function plugins(root) {
   if (_plugins) return _plugins
   var np = node_path(root)
   debug('plugin NODE_PATH=%s', np)
+
   _plugins = [
     cssimport({ path: np ? np : [], glob: true, root: root }),
     nested_props(),
@@ -134,7 +137,13 @@ function plugins(root) {
     vars(),
     clearfix(),
     fontpath(),
-    cssnext({ import: false })
+    url({
+      url: function(url, decl, from, dirname, to, options) {
+        if (http(url)) return url;
+        return relative(root, join(dirname, url));
+      }
+    }),
+    cssnext({ import: false, url: false })
   ]
 
   return _plugins
@@ -147,4 +156,18 @@ function plugins(root) {
 function node_path(root) {
   return _node_path
     || (_node_path = NODE_PATH && join(root, NODE_PATH))
+}
+
+/**
+ * Check if `url` is an HTTP URL.
+ *
+ * @param {String} path
+ * @param {Boolean}
+ * @api private
+ */
+
+function http(url) {
+  return url.slice(0, 4) === 'http'
+    || url.slice(0, 3) === '://'
+    || false;
 }

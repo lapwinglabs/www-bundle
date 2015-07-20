@@ -23,6 +23,7 @@
     "postcss-nested": "^0.3.2",
     "postcss-nested-props": "0.0.4",
     "postcss-simple-vars": "^0.3.0",
+    "postcss-url": "^4.0.0",
     "strip-css-singleline-comments": "^1.1.0"
   },
   "devDependencies": {
