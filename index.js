@@ -1,5 +1,5 @@
 /**
- * DEBUG
+ * DEBUG=www-bundle
  */
 
 var debug = require('debug')('www-bundle')
@@ -9,7 +9,10 @@ var debug = require('debug')('www-bundle')
  */
 
 var strip_comments = require('strip-css-singleline-comments/sync');
+var nested_props = require('postcss-nested-props')
 var cssimport = require('postcss-import')
+var clearfix = require('postcss-clearfix')
+var fontpath = require('postcss-fontpath')
 var nested = require('postcss-nested')
 var vars = require('postcss-simple-vars')
 var Browserify = require('browserify')
@@ -124,12 +127,14 @@ function plugins(root) {
   if (_plugins) return _plugins
   var np = node_path(root)
   debug('plugin NODE_PATH=%s', np)
-
   _plugins = [
     cssimport({ path: np ? np : [], glob: true, root: root }),
-    cssnext({ import: false }),
+    nested_props(),
     nested(),
-    vars()
+    vars(),
+    clearfix(),
+    fontpath(),
+    cssnext({ import: false })
   ]
 
   return _plugins

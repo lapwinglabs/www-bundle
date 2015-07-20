@@ -17,8 +17,11 @@
     "envify": "^3.4.0",
     "koa-bundle": "^1.0.5",
     "postcss": "^4.1.11",
+    "postcss-clearfix": "^0.1.0",
+    "postcss-fontpath": "^0.1.1",
     "postcss-import": "^5.2.2",
     "postcss-nested": "^0.3.2",
+    "postcss-nested-props": "0.0.4",
     "postcss-simple-vars": "^0.3.0",
     "strip-css-singleline-comments": "^1.1.0"
   },
