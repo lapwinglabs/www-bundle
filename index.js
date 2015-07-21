@@ -57,6 +57,7 @@ module.exports = Bundle({ root: process.cwd() }, function (file, fn) {
   switch (file.type) {
     case 'js': return javascript(file, fn)
     case 'css': return css(file, fn)
+    default: return passthrough(file, fn);
   }
 })
 
@@ -122,6 +123,15 @@ function external (file, fn) {
 }
 
 /**
+ * Passthrough
+ */
+
+function passthrough (file, fn) {
+  debug('passthrough: file %j', file);
+  fs.readFile(file.path, fn)
+}
+
+/**
  * Lazily load the plugins
  */
 
@@ -140,7 +150,7 @@ function plugins(root) {
     url({
       url: function(url, decl, from, dirname, to, options) {
         if (http(url)) return url;
-        return relative(root, join(dirname, url));
+        return '/' + relative(root, join(dirname, url));
       }
     }),
     cssnext({ import: false, url: false })
