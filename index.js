@@ -9,7 +9,6 @@ var debug = require('debug')('www-bundle')
  */
 
 var strip_comments = require('strip-css-singleline-comments/sync')
-var nested_props = require('postcss-nested-props')
 var cssimport = require('postcss-import')
 var clearfix = require('postcss-clearfix')
 var fontpath = require('postcss-fontpath')
@@ -142,7 +141,6 @@ function plugins(root) {
 
   _plugins = [
     cssimport({ path: np ? np : [], glob: true, root: root }),
-    nested_props(),
     nested(),
     vars(),
     clearfix(),
