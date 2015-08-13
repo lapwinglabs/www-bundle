@@ -67,7 +67,8 @@ module.exports = Bundle({ root: process.cwd() }, function (file, fn) {
 function javascript (file, fn) {
   var options = {
     debug: file.debug,
-    paths: node_path(file.root)
+    paths: node_path(file.root),
+    extensions: ['.jsx']
   }
 
   debug('javascript: file %j', file)
