@@ -9,28 +9,27 @@
     "url": "git://github.com/lapwinglabs/www-bundle.git"
   },
   "dependencies": {
-    "babelify": "6.1.2",
-    "browserify": "10.2.3",
+    "babelify": "6.2.0",
+    "browserify": "11.0.1",
     "browserify-markdown": "1.0.0",
-    "cssnext": "1.6.0",
-    "debug": "2.2.0",
+    "cssnext": "1.8.3",
+    "debug": "^2.2.0",
     "envify": "3.4.0",
-    "koa-bundle": "1.0.5",
+    "koa-bundle": "1.0.13",
     "postcss": "4.1.11",
     "postcss-clearfix": "0.1.4",
     "postcss-fontpath": "0.1.1",
-    "postcss-import": "5.2.2",
+    "postcss-import": "6.2.0",
     "postcss-nested": "0.3.2",
     "postcss-simple-vars": "0.3.0",
-    "postcss-url": "4.0.0",
+    "postcss-url": "4.0.1",
     "strip-css-singleline-comments": "1.1.0"
   },
   "devDependencies": {
     "koa": "0.21.0",
     "mocha": "*",
     "normalize.css": "3.0.3",
-    "react": "0.13.3",
-    "should": "*"
+    "react": "0.13.3"
   },
   "main": "index",
   "browser": {
