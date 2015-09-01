@@ -9,6 +9,7 @@ var debug = require('debug')('www-bundle')
  */
 
 var strip_comments = require('strip-css-singleline-comments/sync')
+var str2js = require('browserify-string-to-js')
 var cssimport = require('postcss-import')
 var clearfix = require('postcss-clearfix')
 var fontpath = require('postcss-fontpath')
@@ -78,6 +79,7 @@ function javascript (file, fn) {
     .on('error', fn)
     .external(externals)
     .add(file.path)
+    .transform(str2js())
     .transform(markdown())
     .transform(babelify)
     .transform(envify)
