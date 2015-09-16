@@ -10,11 +10,12 @@ var debug = require('debug')('www-bundle')
 
 var strip_comments = require('strip-css-singleline-comments/sync')
 var str2js = require('browserify-string-to-js')
-var cssimport = require('postcss-import')
+var extend = require('postcss-simple-extend')
 var clearfix = require('postcss-clearfix')
 var fontpath = require('postcss-fontpath')
-var nested = require('postcss-nested')
 var vars = require('postcss-simple-vars')
+var cssimport = require('postcss-import')
+var nested = require('postcss-nested')
 var relative = require('path').relative
 var Browserify = require('browserify')
 var NODE_PATH = process.env.NODE_PATH
@@ -146,6 +147,7 @@ function plugins(root) {
     cssimport({ path: np ? np : [], glob: true, root: root }),
     nested(),
     vars(),
+    extend(),
     clearfix(),
     fontpath(),
     url({
