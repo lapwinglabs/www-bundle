@@ -1,37 +1,14 @@
+1.0.12 / 2015-09-16
+==================
 
-n.n.n / 2015-09-01
+  * update deps.
+  * add postcss-simple-exports
+
+1.0.11 / 2015-09-01
 ==================
 
   * add browserify-string-to-js
-  * Release 1.0.10
-  * pin and update dependencies
-  * Release 1.0.9
-  * pin all dependencies
-  * Release 1.0.8
-  * add .jsx as a valid extension
-  * Release 1.0.7
-  * remove nested-props
-  * partially working with other assets
-  * Release 1.0.6
-  * support css assets
-  * Release 1.0.5
-  * add more CSS goodies. clear: fix, border: { ... }, font-path: ...
-  * update example to include variables
-  * Release 1.0.4
-  * strip inline css comments
-  * Merge pull request #1 from abpai/master
-  * add simple variables
-  * Release 1.0.3
-  * fix glob option
-  * Release 1.0.2
-  * add glob support in css
-  * Release 1.0.1
-  * added debug
-  * Release 1.0.0
-  * add markdown support
-  * Release 0.0.2
-  * fix node_path and lazily load plugins
-  * spelling
+
 
 1.0.10 / 2015-08-21
 ==================
