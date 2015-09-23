@@ -82,7 +82,7 @@ function javascript (file, fn) {
     .add(file.path)
     .transform(str2js())
     .transform(markdown())
-    .transform(babelify)
+    .transform(babelify.configure({ optional: ['runtime'] }))
     .transform(envify)
     .bundle(fn)
 }

@@ -33,6 +33,9 @@
     "normalize.css": "3.0.3",
     "react": "0.13.3"
   },
+  "peerDependencies": {
+    "babel-runtime": "^5.8.24"
+  },
   "main": "index",
   "browser": {
     "react": "react/dist/react.js"
