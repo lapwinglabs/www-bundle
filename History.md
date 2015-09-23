@@ -1,3 +1,9 @@
+
+2.0.0 / 2015-09-23
+==================
+
+  * BREAKING: add babel-runtime to build (will need to run `npm install babel-runtime` in your app)
+
 1.0.12 / 2015-09-16
 ==================
 
