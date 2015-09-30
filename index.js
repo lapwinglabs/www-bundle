@@ -8,23 +8,24 @@ var debug = require('debug')('www-bundle')
  * Module Dependencies
  */
 
-var strip_comments = require('strip-css-singleline-comments/sync')
 var str2js = require('browserify-string-to-js')
 var extend = require('postcss-simple-extend')
 var clearfix = require('postcss-clearfix')
 var fontpath = require('postcss-fontpath')
 var vars = require('postcss-simple-vars')
+var readFile = require('cached-readfile')
 var cssimport = require('postcss-import')
 var nested = require('postcss-nested')
 var relative = require('path').relative
 var Browserify = require('browserify')
+var assign = require('object-assign')
 var NODE_PATH = process.env.NODE_PATH
 var Bundle = require('koa-bundle')
+var watchify = require('watchify')
 var url = require('postcss-url')
 var join = require('path').join
 var postcss = require('postcss')
 var cssnext = require('cssnext')
-var fs = require('fs')
 var _node_path;
 var _plugins;
 
@@ -33,6 +34,7 @@ var _plugins;
  */
 
 var markdown = require('browserify-markdown')
+var watchify = require('watchify')
 var babelify = require('babelify')
 var envify = require('envify')
 
@@ -43,10 +45,22 @@ var envify = require('envify')
 var externals = ['react', 'd3', 'jquery']
 
 /**
+ * Production
+ */
+
+var production = process.env.NODE_ENV === 'production'
+
+/**
+ * JS_files
+ */
+
+var js = {}
+
+/**
  * Export `bundle`
  */
 
-module.exports = Bundle({ root: process.cwd() }, function (file, fn) {
+exports = module.exports = Bundle({ root: process.cwd() }, function (file, fn) {
   // jsx => js
   if (file.type === 'jsx') file.type = 'js'
 
@@ -73,18 +87,40 @@ function javascript (file, fn) {
     extensions: ['.jsx']
   }
 
+  if (!production) {
+    options = assign(options, {
+      packageCache: {},
+      fullPaths: true,
+      cache: {}
+    })
+  }
+
   debug('javascript: file %j', file)
   debug('javascript: options: %j', options)
 
-  Browserify(options)
-    .on('error', fn)
+  if (js[file.path]) {
+    return js[file.path].bundle(fn)
+  }
+
+  var b = Browserify(options)
     .external(externals)
+    .on('error', fn)
     .add(file.path)
     .transform(str2js())
     .transform(markdown())
     .transform(babelify.configure({ optional: ['runtime'] }))
     .transform(envify)
-    .bundle(fn)
+
+  if (production) {
+    js[file.path] = b
+    return js[file.path].bundle(fn)
+  } else {
+    var w = js[file.path] = watchify(b)
+    w.on('log', function(msg) {
+      debug('recompiled: %s',msg);
+    })
+    w.bundle(fn)
+  }
 }
 
 /**
@@ -94,9 +130,8 @@ function javascript (file, fn) {
 function css (file, fn) {
   debug('css: file %j', file)
 
-  fs.readFile(file.path, 'utf8', function (err, str) {
+  readFile(file.path, 'utf8', function (err, str) {
     if (err) return fn(err)
-    str = strip_comments(str);
     postcss(plugins(file.root))
       .process(str, { from: file.path })
       .then(function (result) {
@@ -116,13 +151,35 @@ function external (file, fn) {
   var options = {
     debug: file.debug,
     exposeAll: true,
-    noparse: true
+    noParse: true
   }
 
-  Browserify(options)
+  if (!production) {
+    options = assign(options, {
+      packageCache: {},
+      fullPaths: true,
+      cache: {}
+    })
+  }
+
+  if (js[file.path]) {
+    return js[file.path].bundle(fn)
+  }
+
+  var b = Browserify(options)
     .on('error', fn)
     .require(file.path, { expose: file.mod, basedir: file.root })
-    .bundle(fn)
+
+  if (production) {
+    js[file.path] = b
+    return js[file.path].bundle(fn)
+  } else {
+    var w = js[file.path] = watchify(b)
+    w.on('log', function(msg) {
+      debug('recompiled: %s',msg);
+    })
+    w.bundle(fn)
+  }
 }
 
 /**
@@ -131,7 +188,7 @@ function external (file, fn) {
 
 function passthrough (file, fn) {
   debug('passthrough: file %j', file);
-  fs.readFile(file.path, fn)
+  readFile(file.path, fn)
 }
 
 /**
@@ -144,18 +201,18 @@ function plugins(root) {
   debug('plugin NODE_PATH=%s', np)
 
   _plugins = [
-    cssimport({ path: np ? np : [], glob: true, root: root }),
+    cssimport({ path: np ? np : [], glob: true, root: root, async: true }),
     nested(),
-    vars(),
-    extend(),
     clearfix(),
     fontpath(),
+    vars(),
     url({
       url: function(url, decl, from, dirname, to, options) {
         if (http(url)) return url;
         return '/' + relative(root, join(dirname, url));
       }
     }),
+    extend(),
     cssnext({ import: false, url: false })
   ]
 

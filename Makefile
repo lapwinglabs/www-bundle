@@ -1,7 +1,9 @@
+example:
+	@PORT=5080 ./node_modules/.bin/node-dev --harmony example/react/index.js
 
 test:
 	@./node_modules/.bin/mocha \
 		--require should \
 		--reporter spec
 
-.PHONY: test
+.PHONY: example test

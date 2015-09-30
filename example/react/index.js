@@ -1,7 +1,6 @@
 /**
  * Module Dependencies
  */
-
 var koa = require('koa')()
 var bundle = require('../..')
 var fs = require('fs');

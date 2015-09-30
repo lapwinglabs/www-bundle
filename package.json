@@ -13,10 +13,12 @@
     "browserify": "11.1.0",
     "browserify-markdown": "1.0.0",
     "browserify-string-to-js": "^1.0.0",
+    "cached-readfile": "0.0.1",
     "cssnext": "1.8.4",
     "debug": "^2.2.0",
     "envify": "3.4.0",
     "koa-bundle": "1.0.13",
+    "object-assign": "^4.0.1",
     "postcss": "5.0.5",
     "postcss-clearfix": "0.2.0",
     "postcss-fontpath": "0.2.0",
@@ -25,11 +27,12 @@
     "postcss-simple-extend": "^1.0.0",
     "postcss-simple-vars": "1.0.1",
     "postcss-url": "5.0.0",
-    "strip-css-singleline-comments": "1.1.0"
+    "watchify": "^3.4.0"
   },
   "devDependencies": {
     "koa": "1.0.0",
     "mocha": "*",
+    "node-dev": "^2.7.1",
     "normalize.css": "3.0.3",
     "react": "0.13.3"
   },
