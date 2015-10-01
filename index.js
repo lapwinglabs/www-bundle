@@ -65,7 +65,7 @@ exports = module.exports = Bundle({ root: process.cwd() }, function (file, fn) {
   if (file.type === 'jsx') file.type = 'js'
 
   // handle externals
-  if (~externals.indexOf(file.mod)) {
+  if (file.external !== undefined || ~externals.indexOf(file.mod)) {
     return external(file, fn)
   }
 
