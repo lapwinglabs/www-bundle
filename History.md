@@ -1,4 +1,9 @@
 
+2.1.1 / 2015-09-30
+==================
+
+  * bump deps and add ?external to externalize browserify bundles for lazy loading
+
 2.1.0 / 2015-09-29
 ==================
 
