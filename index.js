@@ -170,12 +170,17 @@ function css (file, fn) {
 
 function external (file, fn) {
   debug('external: compiling "%s" at "%s"', file.mod, file.path)
+  var ext = externals.filter(function(external) {
+    return external.indexOf(file.mod)
+  })
 
   var b = browserify(file, {}, fn)
     .require(file.path, { expose: file.route, basedir: file.root })
-    .external(externals)
+    .external(ext)
 
-  externals.push(file.mod)
+  if (!~externals.indexOf(file.mod)) {
+    externals.push(file.mod)
+  }
 
   return b.bundle(fn)
 }
