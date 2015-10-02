@@ -1,5 +1,5 @@
 example:
-	@PORT=5080 ./node_modules/.bin/node-dev --harmony example/react/index.js
+	@NODE_PATH=lib PORT=5080 ./node_modules/.bin/node-dev --harmony example/react/index.js
 
 test:
 	@./node_modules/.bin/mocha \

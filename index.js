@@ -51,6 +51,12 @@ var externals = ['react', 'd3', 'jquery']
 var production = process.env.NODE_ENV === 'production'
 
 /**
+ * Externals
+ */
+
+var externals = []
+
+/**
  * JS_files
  */
 
@@ -66,6 +72,7 @@ exports = module.exports = Bundle({ root: process.cwd() }, function (file, fn) {
 
   // handle externals
   if (file.external !== undefined || ~externals.indexOf(file.mod)) {
+    externals.push(file.mod)
     return external(file, fn)
   }
 
@@ -81,31 +88,42 @@ exports = module.exports = Bundle({ root: process.cwd() }, function (file, fn) {
  */
 
 function javascript (file, fn) {
-  var options = {
-    debug: file.debug,
+  debug('compiling "%s" at "%s"', file.mod, file.path)
+  return browserify(file, {}, fn)
+    .external(externals)
+    .add(file.path)
+    .bundle(fn)
+}
+
+/**
+ * Build a browserify instance
+ */
+
+function browserify (file, options, fn) {
+  var defaults = {
+    noParse: file.parse === 'false',
     paths: node_path(file.root),
-    extensions: ['.jsx']
+    extensions: ['.jsx'],
+    basedir: file.root,
+    debug: file.debug
   }
 
   if (!production) {
-    options = assign(options, {
+    defaults = assign(defaults, {
       packageCache: {},
       fullPaths: true,
       cache: {}
     })
   }
 
-  debug('javascript: file %j', file)
-  debug('javascript: options: %j', options)
+  options = assign(defaults, options || {})
 
   if (js[file.path]) {
-    return js[file.path].bundle(fn)
+    return js[file.path]
   }
 
-  var b = Browserify(options)
-    .external(externals)
+  var b = Browserify(options || {})
     .on('error', fn)
-    .add(file.path)
     .transform(str2js())
     .transform(markdown())
     .transform(babelify.configure({ optional: ['runtime'] }))
@@ -113,14 +131,20 @@ function javascript (file, fn) {
 
   if (production) {
     js[file.path] = b
-    return js[file.path].bundle(fn)
+    return js[file.path]
   } else {
     var w = js[file.path] = watchify(b)
     w.on('log', function(msg) {
-      debug('recompiled: %s',msg);
+      debug('recompiled: %s', msg);
     })
-    w.bundle(fn)
+    w.on('update', function(msg) {
+      debug('update: %s', msg);
+    })
+
+    return w
   }
+
+  return b
 }
 
 /**
@@ -128,7 +152,7 @@ function javascript (file, fn) {
  */
 
 function css (file, fn) {
-  debug('css: file %j', file)
+  debug('compiling "%s" at "%s"', file.mod, file.path)
 
   readFile(file.path, 'utf8', function (err, str) {
     if (err) return fn(err)
@@ -146,40 +170,11 @@ function css (file, fn) {
  */
 
 function external (file, fn) {
-  debug('external javascript: file %j', file)
+  debug('external: compiling "%s" at "%s"', file.mod, file.path)
 
-  var options = {
-    debug: file.debug,
-    exposeAll: true,
-    noParse: true
-  }
-
-  if (!production) {
-    options = assign(options, {
-      packageCache: {},
-      fullPaths: true,
-      cache: {}
-    })
-  }
-
-  if (js[file.path]) {
-    return js[file.path].bundle(fn)
-  }
-
-  var b = Browserify(options)
-    .on('error', fn)
-    .require(file.path, { expose: file.mod, basedir: file.root })
-
-  if (production) {
-    js[file.path] = b
-    return js[file.path].bundle(fn)
-  } else {
-    var w = js[file.path] = watchify(b)
-    w.on('log', function(msg) {
-      debug('recompiled: %s',msg);
-    })
-    w.bundle(fn)
-  }
+  return browserify(file, {}, fn)
+    .require(file.path, { expose: file.route, basedir: file.root })
+    .bundle(fn)
 }
 
 /**

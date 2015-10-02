@@ -1,15 +1,17 @@
 /**
  * Module Dependencies
  */
-var koa = require('koa')()
+var join = require('path').join
 var bundle = require('../..')
+var koa = require('koa')()
 var fs = require('fs');
 
 koa.use(bundle({ root: __dirname }))
 
-bundle('react')
-bundle('home.js')
-bundle('home.css')
+bundle(join(__dirname, '/lib/lazy/index.js?external'))
+bundle('react?external&parse=false')
+bundle(join(__dirname, 'home.css'))
+bundle(join(__dirname, 'home.js'))
 
 koa.use(function *(next) {
   var str = yield function (done) {

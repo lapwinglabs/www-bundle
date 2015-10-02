@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "babelify": "6.3.0",
+    "batch": "^0.5.3",
     "browserify": "11.2.0",
     "browserify-markdown": "1.0.0",
     "browserify-string-to-js": "^1.0.1",
@@ -17,7 +18,7 @@
     "cssnext": "1.8.4",
     "debug": "^2.2.0",
     "envify": "3.4.0",
-    "koa-bundle": "1.0.14",
+    "koa-bundle": "2.0.0",
     "object-assign": "^4.0.1",
     "postcss": "5.0.8",
     "postcss-clearfix": "0.2.0",
@@ -27,6 +28,7 @@
     "postcss-simple-extend": "^1.0.0",
     "postcss-simple-vars": "1.0.1",
     "postcss-url": "5.0.0",
+    "sliced": "^1.0.1",
     "watchify": "^3.4.0"
   },
   "devDependencies": {
@@ -34,7 +36,9 @@
     "mocha": "*",
     "node-dev": "^2.7.1",
     "normalize.css": "3.0.3",
-    "react": "0.13.3"
+    "react": "0.13.3",
+    "scriptloader": "^1.1.1",
+    "uid": "0.0.2"
   },
   "peerDependencies": {
     "babel-runtime": "^5.8.24"
