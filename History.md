@@ -1,4 +1,9 @@
 
+2.2.1 / 2015-10-01
+==================
+
+  * have externals use other externals already on the page
+
 2.2.0 / 2015-10-01
 ==================
 
