@@ -72,7 +72,6 @@ exports = module.exports = Bundle({ root: process.cwd() }, function (file, fn) {
 
   // handle externals
   if (file.external !== undefined || ~externals.indexOf(file.mod)) {
-    externals.push(file.mod)
     return external(file, fn)
   }
 
@@ -172,9 +171,13 @@ function css (file, fn) {
 function external (file, fn) {
   debug('external: compiling "%s" at "%s"', file.mod, file.path)
 
-  return browserify(file, {}, fn)
+  var b = browserify(file, {}, fn)
     .require(file.path, { expose: file.route, basedir: file.root })
-    .bundle(fn)
+    .external(externals)
+
+  externals.push(file.mod)
+
+  return b.bundle(fn)
 }
 
 /**
