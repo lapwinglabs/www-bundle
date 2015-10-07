@@ -1,6 +1,8 @@
 
 # www-bundle
 
+  **Deprecated in favor of [webpack-www-bundle](http://github.com/lapwinglabs/webpack-www-bundle)**
+
   Opinionated asset pipeline for the koa front-end servers
 
 ## Installation
