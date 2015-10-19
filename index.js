@@ -125,7 +125,7 @@ function browserify (file, options, fn) {
     .on('error', fn)
     .transform(str2js())
     .transform(markdown())
-    .transform(babelify.configure({ optional: ['runtime'] }))
+    .transform(babelify)
     .transform(envify)
 
   if (production) {
